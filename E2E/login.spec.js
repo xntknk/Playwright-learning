@@ -1,5 +1,6 @@
 import {test, expect} from '@playwright/test';
 import {LoginPage} from '../pages/LoginPage';
+import { validUser, invalidUser, emptyUser } from '../fixtures/users';
 
 
 let loginPage;
@@ -10,20 +11,20 @@ test.beforeEach(async ({ page }) => {
 });
 
 test("Valid Login", async () => {
-    await loginPage.login("Admin", "admin123");
+    await loginPage.login(validUser.username, validUser.password);
 });
 
 test("Login with the invalid user", async() => {
-  await loginPage.login("Assmin", "admin123");
+  await loginPage.login(invalidUser.username, validUser.password);
   await loginPage.invalidMsg();
 });
 
 test("Login with the invalid pwd", async() => {
-  await loginPage.login("Admin", "sdlsjadl");
+  await loginPage.login(validUser.username, invalidUser.password);
   await loginPage.invalidMsg();
 });
 
 test("Leave user field empty", async() => {
-  await loginPage.login("","");
+  await loginPage.login(emptyUser.username, emptyUser.password);
   await loginPage.requireMsg();
 })
